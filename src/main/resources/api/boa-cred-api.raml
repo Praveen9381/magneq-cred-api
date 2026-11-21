@@ -1,0 +1,49 @@
+#%RAML 1.0
+title: Credit Validation API
+version: v1
+baseUri: http://localhost:8083/api
+mediaType: application/json
+protocols:
+  - HTTP
+
+securitySchemes:
+  bearerAuth:
+    type: Pass Through
+    describedBy:
+      headers:
+        Authorization:
+          type: string
+          required: true
+          example: Bearer abc123xyz
+
+/credit-score:
+  /validate:
+    post:
+      securedBy: [bearerAuth]
+      description: Validates customer credit eligibility
+      body:
+        application/json:
+          type: object
+          properties:
+            cust_id:
+              type: string
+              required: true
+              example: AADHAR_5678
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                cust_id: AADHAR_5678
+                credit_score: 760
+                eligibility: ELIGIBLE
+        400:
+          body:
+            application/json:
+              example:
+                message: Missing or invalid customer ID
+        401:
+          body:
+            application/json:
+              example:
+                message: Invalid or expired token

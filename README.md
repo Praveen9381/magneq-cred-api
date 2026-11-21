@@ -1,0 +1,2 @@
+# magneq-cred-api
+
